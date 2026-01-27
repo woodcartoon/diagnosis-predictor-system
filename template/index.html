@@ -1,30 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>Medical Diagnosis Pro</title>
-</head>
-<body>
-    <div class="container">
-        <h1>Diagnostic Assistant</h1>
-        <form method="POST">
-            <input type="text" name="symptoms" placeholder="Symptoms (e.g. Fever, Cough)" required>
-            <div class="vitals">
-                <input type="text" name="hr" placeholder="HR (bpm)">
-                <input type="text" name="temp" placeholder="Temp (°C)">
-                <input type="text" name="bp" placeholder="BP (120/80)">
-            </div>
-            <button type="submit">Analyze & Save Report</button>
-        </form>
-
-        {% if prediction %}
-        <div class="results">
-            <h2>Predictions:</h2>
-            {% for diagnosis, prob in prediction.items() %}
-                <p><strong>{{ diagnosis }}</strong>: {{ (prob * 100)|round(1) }}%</p>
-            {% endfor %}
+<div class="container">
+    <h1>Diagnostic Assistant</h1>
+    <form method="POST">
+        <input type="text" name="symptoms" placeholder="Symptoms (e.g. Fever, Cough)" required>
+        <div class="vitals">
+            <input type="text" name="hr" placeholder="HR (bpm)">
+            <input type="text" name="temp" placeholder="Temp (°C)">
+            <input type="text" name="bp" placeholder="BP (120/80)">
         </div>
-        {% endif %}
+        <button type="submit">Analyze Case</button>
+    </form>
+
+    {% if prediction %}
+    <div class="results">
+        <h2>Predictions:</h2>
+        {% for diagnosis, prob in prediction.items() %}
+            <p><strong>{{ diagnosis }}</strong>: {{ (prob * 100)|round(1) }}%</p>
+        {% endfor %}
+        
+        <form action="/download" method="POST">
+            <input type="hidden" name="report_text" value="{{ report_data }}">
+            <button type="submit" class="btn-download">Download .txt Report</button>
+        </form>
     </div>
-</body>
-</html>
+    {% endif %}
+</div>
