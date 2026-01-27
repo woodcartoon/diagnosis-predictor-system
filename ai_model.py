@@ -1,56 +1,20 @@
-# Import necessary libraries
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
 
-# Load CSV data
-def load_data(csv_file):
-    try:
-        data = pd.read_csv(csv_file)
-        return data
-    except Exception as e:
-        print(f"Error loading data: {e}")
+# 1. Load the CSV file
+# Replace 'medical_data.csv' with your actual filename
+df = pd.read_csv('disease_diagnosis.csv')
 
-# Preprocess data
-def preprocess_data(data):
-    # Assuming 'diagnosis' is the target column
-    X = data.drop('diagnosis', axis=1)
-    y = data['diagnosis']
-    
-    # Split data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    # Scale data
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train)
-    X_test = scaler.transform(X_test)
-    
-    return X_train, X_test, y_train, y_test
+# 2. Split Blood Pressure into two separate numerical columns
+# This turns "120/80" into two columns: 120 and 80
+df[['Systolic', 'Diastolic']] = df['Blood_Pressure_mmHg'].str.split('/', expand=True).astype(int)
 
-# Train model
-def train_model(X_train, y_train):
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
-    return model
+# 3. Create a 'Fever' flag (Body Temp > 38.0 C is generally a fever)
+df['Has_Fever'] = df['Body_Temperature_C'] > 38.0
 
-# Evaluate model
-def evaluate_model(model, X_test, y_test):
-    y_pred = model.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
-    report = classification_report(y_test, y_pred)
-    return accuracy, report
+# 4. Reorganize columns for better flow
+cols = ['Patient_ID', 'Age', 'Gender', 'Diagnosis', 'Severity', 
+        'Heart_Rate_bpm', 'Body_Temperature_C', 'Systolic', 'Diastolic', 'Oxygen_Saturation_%']
+df_organized = df[cols]
 
-# Main function
-def main():
-    csv_file = 'disease_diagnosis.csv'  # Replace with your CSV file
-    data = load_data(csv_file)
-    X_train, X_test, y_train, y_test = preprocess_data(data)
-    model = train_model(X_train, y_train)
-    accuracy, report = evaluate_model(model, X_test, y_test)
-    print(f"Model Accuracy: {accuracy:.3f}")
-    print("Classification Report:\n", report)
-
-if __name__ == "__main__":
-    main()
+# 5. Display the first 10 rows in a clean format
+print(df_organized.head(2000).to_string(index=False))
