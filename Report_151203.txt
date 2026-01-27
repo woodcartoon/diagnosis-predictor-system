@@ -1,0 +1,17 @@
+
+MEDICAL DIAGNOSIS REPORT
+Generated on: 2026-01-27 15:12:03
+-------------------------------------------
+PATIENT VITALS:
+- Heart Rate: 63 bpm
+- Temperature: 37 °C
+- Blood Pressure: 83 mmHg
+
+SYMPTOMS PROVIDED:
+- Sore throat
+
+TOP PREDICTED DIAGNOSES:
+- Healthy: 64.8%
+- Bronchitis: 13.3%
+- Flu: 11.6%
+-------------------------------------------

@@ -1,20 +1,38 @@
+from flask import Flask, render_template, request
 import pandas as pd
+import difflib
 
-# 1. Load the CSV file
-# Replace 'medical_data.csv' with your actual filename
+app = Flask(__name__)
+
+# Load and prepare data
 df = pd.read_csv('disease_diagnosis.csv')
+all_valid_symptoms = pd.unique(df[['Symptom_1', 'Symptom_2', 'Symptom_3']].values.ravel('K'))
+all_valid_symptoms = [s for s in all_valid_symptoms if str(s) != 'nan']
 
-# 2. Split Blood Pressure into two separate numerical columns
-# This turns "120/80" into two columns: 120 and 80
-df[['Systolic', 'Diastolic']] = df['Blood_Pressure_mmHg'].str.split('/', expand=True).astype(int)
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    prediction = None
+    if request.method == 'POST':
+        # Get data from HTML form
+        user_symptoms = request.form.get('symptoms').split(',')
+        hr = request.form.get('hr')
+        temp = request.form.get('temp')
+        bp = request.form.get('bp')
 
-# 3. Create a 'Fever' flag (Body Temp > 38.0 C is generally a fever)
-df['Has_Fever'] = df['Body_Temperature_C'] > 38.0
+        # Simple verification logic
+        final_symptoms = [s.strip().capitalize() for s in user_symptoms if s.strip().capitalize() in all_valid_symptoms]
+        
+        if final_symptoms:
+            condition = df[['Symptom_1', 'Symptom_2', 'Symptom_3']].isin(final_symptoms).any(axis=1)
+            matches = df[condition]
+            if not matches.empty:
+                prediction = matches['Diagnosis'].value_counts(normalize=True).head(3).to_dict()
 
-# 4. Reorganize columns for better flow
-cols = ['Patient_ID', 'Age', 'Gender', 'Diagnosis', 'Severity', 
-        'Heart_Rate_bpm', 'Body_Temperature_C', 'Systolic', 'Diastolic', 'Oxygen_Saturation_%']
-df_organized = df[cols]
+                # Save to TXT
+                with open("web_report.txt", "w") as f:
+                    f.write(f"Vitals: HR:{hr}, Temp:{temp}, BP:{bp}\nSymptoms: {final_symptoms}\nResults: {prediction}")
 
-# 5. Display the first 10 rows in a clean format
-print(df_organized.head(2000).to_string(index=False))
+    return render_template('index.html', prediction=prediction)
+
+if __name__ == '__main__':
+    app.run(debug=True)
