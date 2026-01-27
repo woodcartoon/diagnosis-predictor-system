@@ -44,7 +44,7 @@ def evaluate_model(model, X_test, y_test):
 
 # Main function
 def main():
-    csv_file = 'your_data.csv'  # Replace with your CSV file
+    csv_file = 'disease_diagnosis.csv'  # Replace with your CSV file
     data = load_data(csv_file)
     X_train, X_test, y_train, y_test = preprocess_data(data)
     model = train_model(X_train, y_train)
