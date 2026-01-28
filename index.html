@@ -7,20 +7,23 @@
             <input type="text" name="temp" placeholder="Temp (°C)">
             <input type="text" name="bp" placeholder="BP (120/80)">
         </div>
-        <button type="submit">Analyze Case</button>
+        
+        <div class="Analyze_btn">
+            <button type="submit">Analyze Case</button>
+        </div>
+        
     </form>
 
-    {% if prediction %}
+    <!--{% if prediction %}-->
     <div class="results">
         <h2>Predictions:</h2>
-        {% for diagnosis, prob in prediction.items() %}
-            <p><strong>{{ diagnosis }}</strong>: {{ (prob * 100)|round(1) }}%</p>
-        {% endfor %}
+        <!--{% for diagnosis, prob in prediction.items() %}-->
+        <!--{% endfor %}-->
         
         <form action="/download" method="POST">
             <input type="hidden" name="report_text" value="{{ report_data }}">
             <button type="submit" class="btn-download">Download .txt Report</button>
         </form>
     </div>
-    {% endif %}
+    <!--{% endif %}-->
 </div>
