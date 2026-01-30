@@ -1,29 +1,52 @@
-<div class="container">
-    <h1>Diagnostic Assistant</h1>
-    <form method="POST">
-        <input type="text" name="symptoms" placeholder="Symptoms (e.g. Fever, Cough)" required>
-        <div class="vitals">
-            <input type="text" name="hr" placeholder="HR (bpm)">
-            <input type="text" name="temp" placeholder="Temp (°C)">
-            <input type="text" name="bp" placeholder="BP (120/80)">
-        </div>
-        
-        <div class="Analyze_btn">
-            <button type="submit">Analyze Case</button>
-        </div>
-        
-    </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
 
-    <!--{% if prediction %}-->
-    <div class="results">
-        <h2>Predictions:</h2>
-        <!--{% for diagnosis, prob in prediction.items() %}-->
-        <!--{% endfor %}-->
+    <div class="container">
+        <h1>Diagnostic Assistant</h1>
         
-        <form action="/download" method="POST">
-            <input type="hidden" name="report_text" value="{{ report_data }}">
-            <button type="submit" class="btn-download">Download .txt Report</button>
+        <form method="POST">
+            <label class="field-label">Patient Symptoms</label>
+            <input type="text" name="symptoms" placeholder="e.g. Fever, Cough, Fatigue" required>
+            
+            <label class="field-label">Vital Signs</label>
+            <div class="vitals">
+                <input type="text" name="hr" placeholder="HR (bpm)">
+                <input type="text" name="temp" placeholder="Temp (°C)">
+                <input type="text" name="bp" placeholder="BP (120/80)">
+            </div>
+            
+            <div class="Analyze_btn">
+                <button type="submit">Analyze Case</button>
+            </div>
         </form>
+
+        {% if prediction %}
+        <div class="results">
+            <h2>Predictions:</h2>
+            <div class="prediction-list">
+                {% for diagnosis, prob in prediction.items() %}
+                <div class="prediction-item">
+                    <span>{{ diagnosis }}</span>
+                    <strong>{{ prob }}%</strong>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <form action="/download" method="POST">
+                <input type="hidden" name="report_text" value="{{ report_data }}">
+                <button type="submit" class="btn-download">Download .txt Report</button>
+            </form>
+        </div>
+        {% endif %}
     </div>
-    <!--{% endif %}-->
-</div>
+
+</body>
+</html>
