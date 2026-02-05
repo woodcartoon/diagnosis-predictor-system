@@ -1,101 +1,147 @@
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --bg-color: #f4f7f6;
-    --text-color: #333;
-    --white: #ffffff;
+    --bg-color: #ebf2f7;
+    --card-bg: #ffffff;
+    --primary-blue: #3b82f6;
+    --accent-green: #64d2b1;
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-color);
-    color: var(--text-color);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text-main);
     margin: 0;
+    padding: 40px;
     display: flex;
     justify-content: center;
-    padding: 40px 20px;
 }
 
-.container {
-    background: var(--white);
-    max-width: 600px;
+.dashboard {
+    max-width: 1100px;
     width: 100%;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-header {
+.main-header {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
     text-align: center;
     margin-bottom: 30px;
-    border-bottom: 2px solid var(--bg-color);
-    padding-bottom: 10px;
 }
 
-.form-group {
+.main-header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    color: var(--text-main);
+}
+
+.main-header h1 span {
+    color: var(--primary-blue);
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.8);
+}
+
+.card h2 {
+    font-size: 1.2rem;
+    margin-top: 0;
     margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
+    color: var(--text-main);
+}
+
+/* Input Styles */
+.form-group {
+    margin-bottom: 15px;
 }
 
 label {
-    font-weight: bold;
+    display: block;
+    font-size: 0.85rem;
     margin-bottom: 8px;
-    font-size: 0.9rem;
+    color: var(--text-muted);
 }
 
 input {
+    width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background: #f8fafc;
 }
 
-.vitals-row {
+.vitals-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .btn-primary {
+    background: var(--primary-blue);
+    color: white;
     width: 100%;
-    padding: 15px;
-    background-color: var(--secondary-color);
-    color: white;
+    padding: 14px;
     border: none;
-    border-radius: 6px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #2980b9;
-}
-
-.results-area {
-    margin-top: 30px;
-    padding: 20px;
-    background: #e8f4fd;
     border-radius: 8px;
-    border-left: 5px solid var(--secondary-color);
-}
-
-.hidden { display: none; }
-
-ul { list-style: none; padding: 0; }
-
-li {
-    padding: 8px 0;
-    border-bottom: 1px solid #d1e9f9;
-}
-
-.btn-secondary {
-    margin-top: 15px;
-    background: var(--primary-color);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
+    font-weight: 600;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Results Styles */
+.results-card {
+    border-right: 8px solid var(--primary-blue); /* Subtle accent side bar */
+}
+
+.accent-title {
+    color: var(--primary-blue);
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.prediction-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.diag-name { flex-grow: 1; font-weight: 500; }
+.diag-prob { font-weight: bold; color: var(--text-muted); }
+
+.btn-download {
+    margin-top: 25px;
+    background: var(--accent-green);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

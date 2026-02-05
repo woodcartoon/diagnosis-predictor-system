@@ -3,35 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Diagnosis System</title>
+    <title>Medical Diagnosis Assistant</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Medical Diagnosis Assistant</h1>
-            <p>Enter patient vitals and symptoms below</p>
+    <div class="dashboard">
+        <header class="main-header">
+            <h1>Medical <span>Diagnosis Assistant</span></h1>
+            <p>Enter patient vitals and symptoms to generate a report</p>
         </header>
 
-        <main>
-            <section class="input-form">
+        <div class="grid-container">
+            <section class="card input-card">
+                <h2>Input Form</h2>
                 <form id="diagnosisForm">
                     <div class="form-group">
-                        <label for="symptoms">Symptoms (comma-separated)</label>
-                        <input type="text" id="symptoms" placeholder="e.g. Fever, Cough, Headache" required>
+                        <label>Symptoms (comma-separated)</label>
+                        <input type="text" id="symptoms" placeholder="hr, Fever, Cough, Headache">
                     </div>
 
-                    <div class="vitals-row">
+                    <div class="vitals-grid">
                         <div class="form-group">
-                            <label for="hr">Heart Rate (BPM)</label>
+                            <label>Heart Rate (BPM)</label>
                             <input type="number" id="hr" placeholder="72">
                         </div>
                         <div class="form-group">
-                            <label for="temp">Temp (°C)</label>
+                            <label>Temp (°C)</label>
                             <input type="number" step="0.1" id="temp" placeholder="36.5">
                         </div>
                         <div class="form-group">
-                            <label for="bp">Blood Pressure</label>
+                            <label>Blood Pressure</label>
                             <input type="text" id="bp" placeholder="120/80">
                         </div>
                     </div>
@@ -40,12 +41,24 @@
                 </form>
             </section>
 
-            <section id="results" class="results-area hidden">
-                <h3>Top Predictions</h3>
-                <ul id="predictionList"></ul>
-                <button id="downloadBtn" class="btn-secondary">Download Report (.txt)</button>
+            <section class="card results-card">
+                <h2>Results-area</h2>
+                <div id="resultsContent">
+                    <p class="placeholder-text">Predictions will appear here...</p>
+                    <div class="prediction-list-container">
+                        <h3 class="accent-title">Top Predictions</h3>
+                        <ul id="predictionList">
+                            <li class="prediction-item">
+                                <span class="status-dot"></span>
+                                <span class="diag-name">Diagnosis 1</span>
+                                <span class="diag-prob">90.0%</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <button id="downloadBtn" class="btn-download">Download Report (.txt)</button>
+                </div>
             </section>
-        </main>
+        </div>
     </div>
 </body>
 </html>
