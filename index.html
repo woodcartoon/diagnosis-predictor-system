@@ -60,5 +60,52 @@
             </section>
         </div>
     </div>
+    <script>
+    const form = document.getElementById('diagnosisForm');
+    const predictionList = document.getElementById('predictionList');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // 1. Gather data from HTML inputs
+        const formData = {
+            symptoms: document.getElementById('symptoms').value,
+            hr: document.getElementById('hr').value,
+            temp: document.getElementById('temp').value,
+            bp: document.getElementById('bp').value
+        };
+
+        // 2. Send data to Python (running on localhost:8000)
+        try {
+            const response = await fetch('http://127.0.0.1:8000/diagnose', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            // 3. Clear and Update the Results Card
+            predictionList.innerHTML = '';
+            if (result.status === 'success') {
+                result.predictions.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'prediction-item';
+                    li.innerHTML = `
+                        <span class="status-dot"></span>
+                        <span class="diag-name">${item.name}</span>
+                        <span class="diag-prob">${item.prob}</span>
+                    `;
+                    predictionList.appendChild(li);
+                });
+            } else {
+                predictionList.innerHTML = '<li>No match found.</li>';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Make sure your Python Backend is running!');
+        }
+    });
+</script>
 </body>
 </html>
